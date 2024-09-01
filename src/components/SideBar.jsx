@@ -1,0 +1,41 @@
+import React from 'react';
+import Button from './Button';
+import Logo from './Logo';
+import { auth } from './firebase';
+import { signOut } from 'firebase/auth';
+import {logout} from '../RTK/slice'
+import { IoHomeSharp, IoPersonSharp } from "react-icons/io5";
+import { IoSearchSharp } from "react-icons/io5";
+import { IoHeartSharp } from "react-icons/io5";
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+
+const SideBar = () => {
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const handleLogout =()=>{
+     auth.signOut()
+     dispatch(logout())
+    }
+    return ( <>
+    
+    <div className=' w-3/12 border-r-2 border-slate-400 flex flex-col'>
+    <Logo/>
+  
+    <div className=' mt-10 flex flex-col  w-full md:w-5/6 md:border-r-2 md:border-slate-400 md:border-double '>
+  
+    <Button Text='Search' icon={<IoSearchSharp/>} path='/search'/>
+    <Button Text='Profile' icon={<IoPersonSharp/>} path='/profile'/>
+    <Button Text='Home' icon={<IoHomeSharp/>} path='/'/>
+    <Button Text='Liked' icon={<IoHeartSharp className='text-2xl'/>} path='/liked'/>
+
+    <input type="button" onClick={()=>navigate('/post')} value="Post" className='bg-blue-700 mx-auto rounded-lg font-bold text-white mt-4 hover:bg-blue-600 px-3 md:px-6 py-1' />
+    
+    <input type="button" onClick={handleLogout} value="Logout" className='bg-slate-600 mx-auto rounded-lg font-bold text-white mt-4 hover:bg-slate-500 px-3 md:px-6 py-1' />
+
+    </div>
+    </div>
+    </> );
+}
+ 
+export default SideBar;
