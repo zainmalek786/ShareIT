@@ -51,7 +51,7 @@ const Post = () => {
         <h2 className="text-xl font-bold mb-4">Create a Post</h2>
         <form >
           <textarea
-            className="w-full p-2 border rounded-lg mb-4 resize-none"
+            className="md:w-full w-10/12 p-2 border rounded-lg mb-4 resize-none"
             rows="4"
             placeholder="What's on your mind?"
             value={text}
@@ -65,7 +65,7 @@ const Post = () => {
           />
           <button
             onClick={handleSubmit}
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition"
+            className="md:w-full w-10/12  bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition"
           >
             Post
           </button>

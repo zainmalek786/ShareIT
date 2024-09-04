@@ -9,13 +9,14 @@ import { auth } from './firebase';
 function Login() {
     const [email,setEmail] = useState('')
     const [password,setPassword] = useState('')
+    const [loading,setLoading] = useState(false)
    //  const authentic = useSelector((state) => state.auth.isAuthenticate)
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
     const handleSubmit = async (e)=>{
         e.preventDefault()
-
+       setLoading(true)              
         try {
          const user = await signInWithEmailAndPassword(auth,email,password)
          if(user){
@@ -26,6 +27,8 @@ function Login() {
          
         } catch (error) {
          alert(error)
+        }finally{
+         setLoading(false)
         }
        
       
@@ -33,6 +36,8 @@ function Login() {
     }
     return ( 
     <>
+      { loading? ( <div className='flex h-screen w-screen justify-center items-center absolute left-0 top-0 bg-white font-bold' ><h1 className='text-xl text-blue-950'>Loading...</h1></div>):(
+
     <div className='flex h-screen w-screen justify-center items-center absolute left-0 top-0 bg-white'>
        <form action="submit" onSubmit={handleSubmit} className=' bg-slate-200 shadow-lg shadow-gray-400 p-5   text-blue-950 md:w-2/5 w-4/5 '>
         <div className='flex flex-col justify-center ' >
@@ -40,7 +45,7 @@ function Login() {
         <input 
            type="email" 
            placeholder='Enter your email ' 
-           className='pt-2 w-4/5 border-none h-10 mx-auto rounded-md'
+           className='pt-2 pl-2 w-4/5 border-none h-10 mx-auto rounded-md'
            value={email}
            onChange={(e)=>setEmail(e.target.value)}/>
            
@@ -49,7 +54,7 @@ function Login() {
         <input 
            type="password" 
            placeholder='Enter your password ' 
-           className='pt-2 w-4/5 border-none h-10 mx-auto rounded-md'
+           className='pt-2 pl-2 w-4/5 border-none h-10 mx-auto rounded-md'
            value={password}
            onChange={(e)=>setPassword(e.target.value)}/>
 
@@ -62,7 +67,7 @@ function Login() {
         </div>
       </form>
     </div>
-             </> );
+     )} </> );
              
 }
 
