@@ -30,9 +30,9 @@ function User({
 
 
     return (  
-        <div className=' pl-4 pr-8 border rounded-md mt-3 flex  items-center border-slate-600 py-2' onClick={()=>navigate(`displayprofile/${id}`)}>
+        <div className=' pl-4 pr-8 border rounded-md mt-3 flex overflow-hidden flex-shrink-0 items-center border-slate-600 py-2' onClick={()=>navigate(`displayprofile/${id}`)}>
         
-       <img src={profileImage} alt=""  className='h-12 w-12 rounded-full ml-4 flex-auto'/>
+      <span className='h-12 w-12 container overflow-hidden ml-4'>{ profileImage?(<img src={profileImage} alt=""  className='h-12 w-12 object-cover rounded-full  flex-auto'/>):(<div className='h-12  w-12 object-cover rounded-full flex-auto bg-blue-600 text-xs pt-2 font-bold text-center text-blue-200'>User <br />Profile</div>)}</span>
     
        <span className='pl-3 text-center w-40'> 
        <h2 className='font-bold text-blue-900 font-lg flex-auto'>{fullName}</h2>

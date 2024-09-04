@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth,db } from './firebase';
-import { doc,setDoc } from 'firebase/firestore';
+import { collection, doc,getDoc,getDocs,query,setDoc,where } from 'firebase/firestore';
 import {login} from '../RTK/slice'
 import { getStorage,ref,uploadBytes,getDownloadURL} from 'firebase/storage';
 import { useDispatch } from 'react-redux';
@@ -13,7 +13,9 @@ function Signup() {
     const [password,setPassword] = useState('')
     const [userName,setUserName] = useState('')
     const [fullName,setFullName] = useState('')
-    const [profile,setProfile] = useState('')
+    const [profile,setProfile]   = useState('')
+    const [loading,setLoading]   = useState(false)
+
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
@@ -25,9 +27,12 @@ function Signup() {
       return await getDownloadURL(storageRef)
     }
     const handleSubmit = async ()=>{
-       
+        setLoading(true)
       try {
-         
+         const q = query(collection(db,'Users'),where('userName','==', userName))
+         const userExist = await getDocs(q)
+         if(userExist) {alert('This username already exist')}
+         if(userExist.empty){
          await createUserWithEmailAndPassword(auth,email,password)
          const user = auth.currentUser;
 
@@ -39,7 +44,7 @@ function Signup() {
             
             await setDoc(doc(db,'Users',user.uid),{
                email:user.email,
-               userName: userName.replace(/\s/g, ""),
+               userName: userName.toLocaleLowerCase().replace(/\s/g, ""),
                fullName: fullName,
                profilePictureUrl:profileUrl,
                followers:[],
@@ -50,23 +55,36 @@ function Signup() {
          console.log('user register and profile saved')
          await signInWithEmailAndPassword(auth,email,password)
          dispatch(login())
-         navigate('/')
+         navigate('/')}
       } catch (error) {
          console.log(error)
-         alert(error)
+       
+      }finally{
+         setLoading(false)
       }
     }
+    
+
     return ( 
     <>
-    
-    <div className='flex h-screen w-screen justify-center items-center absolute left-0 top-0 bg-white'>
-       <form className=' bg-slate-200 shadow-lg shadow-gray-400 p-5   text-blue-950 md:w-2/5 w-4/5 '>
-        <div className='flex flex-col justify-center ' >
-        <label htmlFor="email" className='block w-4/5 mx-auto text-left font-bold text-lg'>Email</label>
+    { loading? ( <div className='flex h-screen w-screen justify-center items-center absolute left-0 top-0 bg-white font-bold' ><h1 className='text-xl text-blue-950'>Loading...</h1></div>):(
+    <div className='flex h-screen w-screen justify-center items-center absolute left-0 top-0 bg-white' >
+       <form 
+       className=' bg-slate-200 shadow-lg shadow-gray-400 p-5   text-blue-950 md:w-2/5 w-4/5 '
+       >
+        <div 
+        className='flex flex-col justify-center '
+         >
+        <label 
+         htmlFor="email" 
+         className='block w-4/5 mx-auto text-left font-bold text-lg
+         '
+         >Email
+         </label>
         <input 
            type="email" 
            placeholder='Enter your email ' 
-           className='pt-2 w-4/5 border-none h-10 mx-auto rounded-md'
+           className='pt-2 pl-3 w-4/5 border-none h-10 mx-auto rounded-md'
            value={email}
            required
            onChange={(e)=>setEmail(e.target.value)}/>
@@ -74,7 +92,7 @@ function Signup() {
         <input 
            type="text" 
            placeholder='Enter your username ' 
-           className='pt-2 w-4/5 border-none h-10 mx-auto rounded-md'
+           className='pt-2 pl-3 w-4/5 border-none h-10 mx-auto rounded-md'
            value={userName}
            required
            onChange={(e)=>setUserName(e.target.value)}/>
@@ -83,7 +101,7 @@ function Signup() {
         <input 
            type="text" 
            placeholder='Enter your full name ' 
-           className='pt-2 w-4/5 border-none h-10 mx-auto rounded-md'
+           className='pt-2 pl-3 w-4/5 border-none h-10 mx-auto rounded-md'
            value={fullName}
            required
            onChange={(e)=>setFullName(e.target.value)}/>   
@@ -92,7 +110,7 @@ function Signup() {
         <input 
            type="password" 
            placeholder='Enter your password ' 
-           className='pt-2 w-4/5 border-none h-10 mx-auto rounded-md'
+           className='pt-2 pl-3 w-4/5 border-none h-10 mx-auto rounded-md'
            value={password}
            required
            onChange={(e)=>setPassword(e.target.value)}/>
@@ -115,7 +133,7 @@ function Signup() {
            
         </div>
       </form>
-    </div>
+    </div>)}
              </> );
              
 }
