@@ -67,7 +67,7 @@ function Signup() {
 
     return ( 
     <>
-    { loading? ( <div className='flex h-screen w-screen justify-center items-center absolute left-0 top-0 bg-white font-bold' ><h1 className='text-xl text-blue-950'>Loading...</h1></div>):(
+    { loading? ( <div className='flex h-screen w-screen justify-center items-center absolute left-0 top-0 bg-white font-bold' ><h1 className='text-xl text-blue-950'>Creating your account...</h1></div>):(
     <div className='flex h-screen w-screen justify-center items-center absolute left-0 top-0 bg-white' >
        <form 
        className=' bg-slate-200 shadow-lg shadow-gray-400 p-5   text-blue-950 md:w-2/5 w-4/5 '

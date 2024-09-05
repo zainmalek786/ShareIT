@@ -18,11 +18,11 @@ const SideBar = () => {
 
     const handleOptions = ()=>{
         if(options){
-            setHidden('hidden')
+            setHidden('')
             setOptions(false)
         }else{
         setOptions(true)
-        setHidden('')}
+        setHidden('hidden')}
     }
     const handleLogout =()=>{
      auth.signOut()
@@ -36,7 +36,7 @@ const SideBar = () => {
 
     <div  
       onClick={handleOptions} 
-      className="w-full md:w-5/6 mt-12  shadow-sm shadow-slate-500 max-h-6  text-3xl items-center justify-end md:flex hidden rounded-sm">{!options?(<><p className='text-base pr-5 font-semibold '>Show Options</p><IoChevronUp className='ml-8'/></>):(<><p className='text-base pr-5 font-semibold '>Hide Options</p><IoChevronDown className='ml-8'/></>)}
+      className="w-full md:w-5/6 mt-12 hover:bg-slate-100 shadow-sm shadow-slate-500 max-h-6  text-3xl items-center justify-end md:flex hidden rounded-sm">{ options?(<><p className='text-base pr-5 font-semibold '>Show Options</p><IoChevronUp className='ml-8'/></>):(<><p className='text-base pr-5 font-semibold '>Hide Options</p><IoChevronDown className='ml-8'/></>)}
       </div>
 
     <div className={`${hidden} mt-0 flex flex-col   w-full md:w-5/6 md:border-r-2 md:border-slate-400 md:border-double`} >
