@@ -31,7 +31,7 @@ function Signup() {
       try {
          const q = query(collection(db,'Users'),where('userName','==', userName))
          const userExist = await getDocs(q)
-         if(userExist) {alert('This username already exist')}
+         if(!userExist.empty) {alert('This username already exist')}
          if(userExist.empty){
          await createUserWithEmailAndPassword(auth,email,password)
          const user = auth.currentUser;
